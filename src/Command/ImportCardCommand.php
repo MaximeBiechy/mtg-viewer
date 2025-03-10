@@ -42,10 +42,12 @@ class ImportCardCommand extends Command
 
         // On récupère le temps actuel
         $start = microtime(true);
+        $this->logger->info('Starting card import from ' . $filepath);
 
         $this->logger->info('Importing cards from ' . $filepath);
         if ($handle === false) {
             $io->error('File not found');
+            $this->logger->error('File not found: ' . $filepath);
             return Command::FAILURE;
         }
 
@@ -78,6 +80,7 @@ class ImportCardCommand extends Command
         // On récupère le temps actuel, et on calcule la différence avec le temps de départ
         $end = microtime(true);
         $timeElapsed = $end - $start;
+        $this->logger->info('END: List all cards at ' . date('Y-m-d H:i:s'));
         $io->success(sprintf('Imported %d cards in %.2f seconds', $i, $timeElapsed));
         return Command::SUCCESS;
     }
